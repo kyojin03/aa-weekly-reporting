@@ -1,0 +1,90 @@
+rules_version = '2';
+
+// Who can do what
+//   - Nobody outside the roster can read or write anything.
+//   - A roster member reads everything, and writes only their own tasks and
+//     their own weekly submissions.
+//   - An admin (members/{email}.admin == true) can also edit other people's
+//     tasks and manage the roster.
+//   - History entries and deletion copies can be added but never changed.
+//
+// The roster is keyed by lower-case Google account email.
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function signedIn() {
+      return request.auth != null
+        && request.auth.token.email != null
+        && request.auth.token.email_verified == true;
+    }
+    function myEmail() {
+      return request.auth.token.email.lower();
+    }
+    function myMemberPath() {
+      return /databases/$(database)/documents/members/$(myEmail());
+    }
+    function isMember() {
+      return signedIn() && exists(myMemberPath()) && get(myMemberPath()).data.active != false;
+    }
+    function isAdmin() {
+      return isMember() && get(myMemberPath()).data.admin == true;
+    }
+
+    match /members/{email} {
+      // Anyone signed in may look up their OWN entry, so the app can say "not on the roster".
+      allow get: if signedIn() && email == myEmail();
+      allow read: if isMember();
+      allow create, update: if isAdmin()
+        && request.resource.data.email == email
+        && email == email.lower()
+        && request.resource.data.name is string
+        && request.resource.data.name.size() > 0
+        && request.resource.data.name.size() <= 120;
+      allow delete: if false; // deactivate instead, so old records keep their owner
+    }
+
+    match /tasks/{taskId} {
+      function validTask() {
+        return request.resource.data.id == taskId
+          && request.resource.data.title is string
+          && request.resource.data.title.size() > 0
+          && request.resource.data.title.size() <= 200
+          && request.resource.data.owner_id is string
+          && request.resource.data.task_type in ['PLANNED', 'ADDITIONAL']
+          && request.resource.data.status in ['Not Started', 'In Progress', 'Blocked', 'Completed', 'Cancelled']
+          && request.resource.data.open is bool
+          && request.resource.data.archived is bool
+          && request.resource.data.weeks is list;
+      }
+
+      allow read: if isMember();
+      allow create: if isMember() && validTask()
+        && (request.resource.data.owner_id == myEmail() || isAdmin());
+      allow update: if isMember() && validTask()
+        && ((resource.data.owner_id == myEmail() && request.resource.data.owner_id == myEmail()) || isAdmin());
+      allow delete: if isMember() && (resource.data.owner_id == myEmail() || isAdmin());
+
+      match /events/{eventId} {
+        allow read: if isMember();
+        allow create: if isMember() && request.resource.data.actor == myEmail();
+        allow update, delete: if false;
+      }
+    }
+
+    match /snapshots/{snapId} {
+      allow read: if isMember();
+      allow create, update: if isMember()
+        && request.resource.data.id == snapId
+        && request.resource.data.submitted_by == myEmail()
+        && (request.resource.data.member_id == myEmail() || isAdmin());
+      allow delete: if false;
+    }
+
+    match /deletions/{taskId} {
+      allow read: if isAdmin();
+      allow create: if isMember() && request.resource.data.actor == myEmail();
+      allow update, delete: if false;
+    }
+  }
+}

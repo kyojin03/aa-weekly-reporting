@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#f5f5f7">
+  <link rel="preconnect" href="https://www.gstatic.com">
+  <link rel="preconnect" href="https://firestore.googleapis.com">
+  <title>Academic Affairs — Weekly Accomplishment Reporting</title>
+  <link rel="stylesheet" href="./css/styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <h1>Academic Affairs</h1>
+      <div class="sub">Weekly accomplishment reporting</div>
+    </div>
+    <div class="spacer"></div>
+    <div class="actions row" id="chrome" hidden>
+      <select id="memberSelect" aria-label="Whose week to show"></select>
+      <div class="weekstep" role="group" aria-label="Reporting week">
+        <button type="button" class="wk-btn" data-act="week-prev" aria-label="Previous week">&#8249;</button>
+        <span id="weekLabel" class="wk-label" aria-live="polite"></span>
+        <button type="button" class="wk-btn" data-act="week-next" aria-label="Next week">&#8250;</button>
+        <button type="button" class="wk-today" id="weekToday" data-act="week-today" hidden>This week</button>
+      </div>
+      <span id="userBox" class="userbox"></span>
+    </div>
+  </header>
+
+  <div class="layout">
+    <nav class="nav" role="tablist" aria-label="Main sections" id="nav" hidden>
+      <button role="tab" aria-selected="true" data-view="my"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3.5" y="5" width="17" height="16" rx="3"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg>My Week</button>
+      <button role="tab" aria-selected="false" data-view="team"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M3.5 20c.8-3.2 2.9-5 5.5-5s4.7 1.8 5.5 5M16 4.8a3.5 3.5 0 0 1 0 6.4M17.5 15.3c1.7.7 2.7 2.2 3 4.7"/></svg>Team</button>
+      <button role="tab" aria-selected="false" data-view="reports"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 3.5h8L19 8.5V20.5H6z"/><path d="M14 3.5V8.5H19M9 13h6M9 16.5h6"/></svg>Reports</button>
+    </nav>
+    <main class="main" id="main">
+      <div id="banner" class="banner" hidden></div>
+      <div id="view"></div>
+      <footer class="muted no-print" style="margin-top:18px">Asia/Manila · weeks run Monday to Sunday.</footer>
+    </main>
+  </div>
+
+  <div id="toasts" class="toast" aria-live="polite"></div>
+  <script type="module" src="./js/app.js"></script>
+</body>
+</html>

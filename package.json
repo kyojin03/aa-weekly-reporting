@@ -1,0 +1,12 @@
+{
+  "name": "aa-weekly-reporting",
+  "version": "3.0.0",
+  "private": true,
+  "description": "Academic Affairs weekly accomplishment reporting (static site + Firebase)",
+  "type": "module",
+  "scripts": {
+    "start": "node dev-server.mjs",
+    "test": "node --test tests/*.test.mjs"
+  },
+  "engines": { "node": ">=18" }
+}
