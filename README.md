@@ -9,10 +9,13 @@ A fast rebuild of the weekly reporting app: a static web page that talks straigh
 - **Signed in:** people sign in with Google. Members change only their own work; admins
   can edit everyone and manage the roster.
 
-> **Status:** the screens and calculation logic are built and tested in *local preview*.
-> The Firebase connection (`js/data-firebase.js`) and the access rules (`firestore.rules`)
-> are written but **have not been run against a real Firebase project yet** — expect a
-> round of fixes the first time it is connected.
+> **Status (2026-11-16):** connected to the Firebase project `aa-weekly-reporting`
+> (Firestore in `asia-southeast1`; Google sign-in on; rules
+> published). Checked live as an admin from `localhost`: sign-in, loading, adding a task,
+> saving a %, change history, submitting a week and permanent delete all worked.
+> **Not yet checked:** what a non-admin member can and cannot do (needs a second
+> account), and sign-in from the published web address (the address must first be added
+> under Authentication → Settings → Authorized domains).
 
 ## Try it now (local preview, no account needed)
 

@@ -1,19 +1,16 @@
 /**
- * Firebase project settings.
+ * Firebase project settings (project "AA Weekly Reporting").
  *
- * While this is null the app runs in LOCAL PREVIEW: no sign-in, and everything
- * you enter is kept only in this browser. To go live, paste the config object
- * from Firebase console → Project settings → Your apps → Web app (see README.md).
  * These values are public identifiers, not secrets: access is controlled by
- * sign-in and by firestore.rules.
+ * Google sign-in and by firestore.rules. Set this to null to run the app in
+ * LOCAL PREVIEW instead (no sign-in, data kept only in the browser), or open
+ * the page with ?local to preview without changing this file.
  */
-export const firebaseConfig = null;
-
-/* Example:
 export const firebaseConfig = {
-  apiKey: '…',
-  authDomain: 'your-project.firebaseapp.com',
-  projectId: 'your-project',
-  appId: '…'
+  apiKey: 'AIzaSyASZIO_4p-BeWhrAeueEsnMUcNNLooJZsI',
+  authDomain: 'aa-weekly-reporting.firebaseapp.com',
+  projectId: 'aa-weekly-reporting',
+  storageBucket: 'aa-weekly-reporting.firebasestorage.app',
+  messagingSenderId: '51350540138',
+  appId: '1:51350540138:web:9da8546244ce7f7a041f13'
 };
-*/
